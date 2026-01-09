@@ -7,14 +7,19 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
+    setUser(null);       // reset user
+    setLoading(true);    // force Loading... render
 
-    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data);
-        setLoading(false);
-      });
+    const timer = setTimeout(() => {
+      fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setUser(data);
+          setLoading(false);
+        });
+    }, 0); // ensures Loading renders first
+
+    return () => clearTimeout(timer);
   }, [id]);
 
   if (loading) {
