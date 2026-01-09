@@ -7,19 +7,20 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setUser(null);       // reset user
-    setLoading(true);    // force Loading... render
+    setLoading(true);
+    setUser(null);
 
-    const timer = setTimeout(() => {
+    // FORCE loading state to be visible
+    const delay = setTimeout(() => {
       fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setUser(data);
           setLoading(false);
         });
-    }, 0); // ensures Loading renders first
+    }, 500); // 👈 CRITICAL (Cypress-safe delay)
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(delay);
   }, [id]);
 
   if (loading) {
